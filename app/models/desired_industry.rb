@@ -1,0 +1,2 @@
+class DesiredIndustry < ApplicationRecord
+end
