@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_29_175858) do
+ActiveRecord::Schema.define(version: 2020_04_29_180452) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,17 @@ ActiveRecord::Schema.define(version: 2020_04_29_175858) do
     t.datetime "updated_at", null: false
     t.index ["post_id"], name: "index_applies_on_post_id"
     t.index ["user_id"], name: "index_applies_on_user_id"
+  end
+
+  create_table "apply_messages", force: :cascade do |t|
+    t.text "body"
+    t.bigint "apply_id"
+    t.integer "user_id"
+    t.integer "company_id"
+    t.boolean "read", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["apply_id"], name: "index_apply_messages_on_apply_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -223,6 +234,7 @@ ActiveRecord::Schema.define(version: 2020_04_29_175858) do
 
   add_foreign_key "applies", "posts"
   add_foreign_key "applies", "users"
+  add_foreign_key "apply_messages", "applies"
   add_foreign_key "company_skills", "companies"
   add_foreign_key "educations", "users"
   add_foreign_key "languages", "users"
