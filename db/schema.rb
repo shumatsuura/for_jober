@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_29_173759) do
+ActiveRecord::Schema.define(version: 2020_04_29_173926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -136,6 +136,16 @@ ActiveRecord::Schema.define(version: 2020_04_29_173759) do
     t.index ["user_id"], name: "index_qualifications_on_user_id"
   end
 
+  create_table "scout_messages", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.bigint "scout_id"
+    t.boolean "read", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["scout_id"], name: "index_scout_messages_on_scout_id"
+  end
+
   create_table "scouts", force: :cascade do |t|
     t.integer "company_id", null: false
     t.integer "user_id", null: false
@@ -204,6 +214,7 @@ ActiveRecord::Schema.define(version: 2020_04_29_173759) do
   add_foreign_key "languages", "users"
   add_foreign_key "posts", "companies"
   add_foreign_key "qualifications", "users"
+  add_foreign_key "scout_messages", "scouts"
   add_foreign_key "user_skills", "users"
   add_foreign_key "work_experiences", "users"
 end
