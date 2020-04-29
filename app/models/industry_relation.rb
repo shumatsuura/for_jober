@@ -1,0 +1,2 @@
+class IndustryRelation < ApplicationRecord
+end
