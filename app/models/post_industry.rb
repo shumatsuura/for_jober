@@ -1,0 +1,2 @@
+class PostIndustry < ApplicationRecord
+end
