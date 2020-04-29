@@ -1,0 +1,2 @@
+module Companies::RegistrationsHelper
+end
