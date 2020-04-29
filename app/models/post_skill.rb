@@ -1,0 +1,2 @@
+class PostSkill < ApplicationRecord
+end
