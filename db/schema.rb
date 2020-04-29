@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_29_175053) do
+ActiveRecord::Schema.define(version: 2020_04_29_175858) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "applies", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "post_id"
+    t.integer "status", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_applies_on_post_id"
+    t.index ["user_id"], name: "index_applies_on_user_id"
+  end
 
   create_table "companies", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -211,6 +221,8 @@ ActiveRecord::Schema.define(version: 2020_04_29_175053) do
     t.index ["user_id"], name: "index_work_experiences_on_user_id"
   end
 
+  add_foreign_key "applies", "posts"
+  add_foreign_key "applies", "users"
   add_foreign_key "company_skills", "companies"
   add_foreign_key "educations", "users"
   add_foreign_key "languages", "users"
