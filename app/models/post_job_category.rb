@@ -1,0 +1,2 @@
+class PostJobCategory < ApplicationRecord
+end
