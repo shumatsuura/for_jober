@@ -22,7 +22,7 @@ class Company < ApplicationRecord
 
   has_many :like_users, dependent: :destroy
 
-  mount_uploader :logo, ImageUploader
-  mount_uploader :header_image, HeaderUploader
+  # mount_uploader :logo, ImageUploader
+  # mount_uploader :header_image, HeaderUploader
 
 end

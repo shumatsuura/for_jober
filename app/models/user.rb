@@ -10,7 +10,7 @@ class User < ApplicationRecord
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, :omniauthable
+         :recoverable, :rememberable, :validatable
 
   has_many :educations, dependent: :destroy
   accepts_nested_attributes_for :educations, allow_destroy: true
@@ -41,8 +41,8 @@ class User < ApplicationRecord
   has_many :follows, dependent: :destroy
   has_many :like_posts, dependent: :destroy
 
-  mount_uploader :image, ImageUploader
-  mount_uploader :cv, CvUploader
+  # mount_uploader :image, ImageUploader
+  # mount_uploader :cv, CvUploader
 
   def self.create_unique_string
     SecureRandom.uuid
