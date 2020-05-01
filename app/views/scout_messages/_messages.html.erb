@@ -1,0 +1,66 @@
+<div class="container">
+  <% if @over_ten %>
+  <%= link_to 'Previous Messages', '?m=all' %>
+  <% end %>
+  <% last_sender = nil %>
+  <% messages.each do |message| %>
+    <% if message.body.present? && message.user_id.present? %>
+      <div class="row d-flex">
+        <div class="col-2">
+          <div class="text-right">
+            <% if last_sender != message.scout.user.first_name %>
+            <%= image_tag(message.scout.user.image.url || "default_image.jpeg", width: "70px") %>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-7">
+          <% if last_sender != message.scout.user.first_name %>
+          <%= link_to message.scout.user.first_name, user_path(message.scout.user.id) %>
+          <% end %>
+          <div class="card">
+            <div class="card-body">
+              <%= message.body %>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 align-self-end">
+          <%= message.message_time %>
+          <% if user_signed_in? %>
+          <%= message.read ? '/ Read' : '/ Unread' %>
+          <% end %>
+        </div>
+      </div>
+      <br>
+      <% last_sender = message.scout.user.first_name %>
+    <% end %>
+    <% if message.body.present? && message.company_id.present? %>
+      <div class="row d-flex flex-row-reverse">
+        <div class="col-2">
+          <% if last_sender != message.scout.company.name %>
+          <%= image_tag(message.scout.company.logo.url || "default_image.jpeg", width: "70px") %>
+          <% end %>
+        </div>
+        <div class="col-7">
+          <div class="text-right">
+            <% if last_sender != message.scout.company.name %>
+            <%= link_to message.scout.company.name, company_path(message.scout.company_id) %>
+            <% end %>
+          </div>
+          <div class="card bg-light">
+            <div class="card-body">
+              <%= message.body %>
+            </div>
+          </div>
+        </div>
+        <div class="col-3 align-self-end text-right">
+          <% if company_signed_in? && message.company_id.present? %>
+            <%= message.read ? '/ Read' : '/ Unread' %><br>
+          <% end %>
+          <%= message.message_time %>
+        </div>
+      </div>
+      <br>
+      <% last_sender = message.scout.company.name %>
+    <% end %>
+  <% end %>
+</div>

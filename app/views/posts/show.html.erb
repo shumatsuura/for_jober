@@ -1,0 +1,76 @@
+<div class="container">
+  <div class="card">
+    <%= image_tag(@post.company.header_image.url, class: "card-img-top img-fluid") if @post.company.header_image.present? %>
+    <%= image_tag("default_header_image.jpeg", class: "card-img-top img-fluid") unless @post.company.header_image.present? %>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <h3 class="card-title"><%= @post.title %></h3>
+        </div>
+          <div class="col-md-6 text-right">
+            <% if user_signed_in? %>
+            <% if current_user.applies.pluck(:post_id).include?(@post.id) %>
+            <%= link_to "Applied", apply_apply_messages_path(@post.applies.find_by(user_id: current_user.id)) %>
+            <% else %>
+            <%= link_to "Apply Now", applies_path(apply:{user_id: current_user.id, post_id: @post.id}), method: :post, class: "btn btn-primary" %>
+            <% end %>
+            <% end %>
+            <% if user_signed_in? %>
+              <% if current_user.like_posts.pluck(:post_id).include?(@post.id) %>
+                <%= link_to(like_post_path(post_id: @post.id), method: :delete) do %>
+                <i class="fas fa-heart"></i>
+                <% end %>
+              <% else %>
+                <%= link_to(like_posts_path(like_post:{user_id: current_user.id, post_id: @post.id}), method: :post) do %>
+                <i class="far fa-heart"></i>
+                <% end %>
+              <% end %>
+            <% end %>
+
+          </div>
+      </div>
+      <%= link_to(company_path(@post.company_id)) do %>
+      <%= image_tag @post.company.logo.url, class: 'img-thumbnail', width: "50px" if @post.company.logo.present? %>
+      <%= image_tag "default_image.jpeg", class: 'img-thumbnail', width: "50px" unless @post.company.logo.present? %>
+      <% end %>
+      <p><%= link_to @post.company.name, company_path(@post.company_id) %></p>
+      <div class="">
+        <strong>Position: </strong><span><%= @post.position %>,</span>
+        <strong>Location: </strong><span><%= @post.location %>,</span>
+        <strong>Job Category: </strong>
+        <% @post.job_categories.each do |n| %>
+        <span>
+          <%= n.name %>,
+        </span>
+        <% end %>
+
+        <strong>Industry:</strong>
+        <% @post.industries.each do |n| %>
+        <span>
+          <%= n.name %>,
+        </span>
+        <% end %>
+
+        <strong>Salary</strong>
+        <span>
+          <%= @post.salary.to_s(:delimited) if @post.salary.present? %>
+        </span>
+
+        <% if @post.skills.present? %>
+        <strong>Skill:</strong>
+        <% end %>
+        <% @post.skills.each do |n| %>
+        <span class="badge badge-primary">
+          <%= n.name %>
+        </span>
+        <% end %>
+        <strong>No. of Recruits: </strong><%= @post.number_of_recruits %>
+      </div>
+      <div class="mt-3">
+        <p>
+          <%= simple_format(h(@post.description)) %>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

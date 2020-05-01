@@ -1,0 +1,175 @@
+<div class="container">
+  <div class="row">
+    <!-- Side Bar -->
+    <%= render 'sidebar' %>
+    <!-- Side Bar Until Here  -->
+    <div class="col-md-9">
+        <% n = 1 %>
+        <%= paginate @users %>
+        <% @users.each do |user| %>
+        <div class="card mb-2">
+          <div class="row no-gutters">
+            <div class="col-md-2">
+              <div class="m-3">
+                <%= image_tag user.image.url, class: 'img-thumbnail',width: "150" if user.image.present? %>
+                <%= image_tag("default_image.jpeg", class: 'img-thumbnail',width: "150") unless user.image.present? %>
+              </div>
+              <div class="pl-3">
+                <h6 class="card-title"><%= link_to "#{user.first_name && user.last_name ? user.first_name + " " + user.last_name : "No Name"}",user_path(user.id) %></h6>
+                <div><small><%= user.status %></small></div>
+                <div><small><%= user.age %> years old</small></div>
+                <small class="text-muted">Updated at <%= user.updated_at.strftime("%m/%d/%Y") %></small>
+              </div>
+            </div>
+            <div class="col-md-10">
+              <div class="card-body">
+                <div class="row">
+                  <!-- Left Side Card Area -->
+                  <div class="col-md-6">
+                    <!-- Left Side Card 1 -->
+                    <div class="card mb-2">
+                      <div class="pt-1 pb-1 pl-2 bg-dark text-white">
+                        <strong>Preference</strong>
+                      </div>
+                      <div class="card-body p-2">
+                        <div class="mb-2">
+                          <strong>Job Category: </strong>
+                          <% user.job_categories.each do |job_category| %>
+                          <%= job_category.name %>
+                          <% end %>
+                        </div>
+                        <div class="mb-2">
+                          <strong>Industry: </strong>
+                          <% user.industries.each do |industry| %>
+                          <%= industry.name %>
+                          <% end %>
+                        </div>
+                        <div>
+                          <strong>Expected Salary: </strong>
+                          <%= user.expected_salary.to_s(:delimited) + "USD" if user.expected_salary.present? %>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Left Side Card 2 -->
+                    <div class="card mb-2">
+                      <div class="card-header pt-1 pb-1 pl-2 bg-dark text-white">
+                        <strong>Skill</strong>
+                      </div>
+                      <div class="card-body p-2">
+                        <div class="mb-2">
+                          <strong>Language:</strong>
+                          <% user.languages.each do |language| %>
+                          <%= language.name %>
+                          <span class = "badge badge-primary"><%= language.level %></span>
+                          <% end %>
+                        </div>
+                        <div class="mb-2">
+                          <strong>Skill:</strong>
+                          <% user.user_skills.each do |user_skill| %>
+                          <span class="badge badge-light"><%= user_skill.name %></span>
+                          <% end %>
+                        </div>
+                        <div class="mb-2">
+                          <strong>
+                            Qualification:
+                          </strong>
+                          <% user.qualifications.each do |qualification| %>
+                          <span class="badge badge-light"><%= qualification.name %></span>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!-- Right Side Card Area -->
+                  <div class="col-md-6">
+                    <!-- Right Side Card 1 -->
+                    <div class="accordion" id = "accordion">
+                    <div class="card mb-2">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item pt-1 pb-1 pl-2 bg-dark text-white">
+                          <strong>Education</strong>
+                        </li>
+                        <% user.educations.each_with_index do |education,i| %>
+                          <% if i + 1 == user.educations.count %>
+                            <li class="list-group-item">
+                          <% else %>
+                            <li class="list-group-item education_user_<%= n %> collapse" aria-labelledby="headingOne" data-parent = "#accordion">
+                          <% end %>
+                            <%= education.school_name %>
+                            <span class = "small"><%= education.major %></span>
+                            <br>
+                            <span class = "small">
+                              <%= education.period_start.strftime("%b, %Y") if education.period_start.present? %>
+                              ~
+                              <%= education.period_end.strftime("%b, %Y") if education.period_end.present? %>
+                            </span>
+                          </li>
+                        <% end %>
+                        <!-- アコーディオンのButton -->
+                        <% if user.educations.count > 1 %>
+                        <li class = "list-group-item text-right p-1">
+                        <span
+                        class="badge badge-secondary"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target=".education_user_<%= n %>"
+                        aria-expanded = "true"
+                        aria-controls="collapseOne">
+                          show more..
+                        </span>
+                      </li>
+                      <% end %>
+                      </ul>
+                      </div>
+                    </div>
+                    <!-- Right Side Card 2 -->
+                    <div class="accordion" id = "accordion_2">
+                    <div class="card">
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item pt-1 pb-1 pl-2 bg-dark text-white">
+                          <strong>Work Experience</strong>
+                        </li>
+                        <% user.work_experiences.each_with_index do |work_experience,i| %>
+                        <% if i + 1 == user.work_experiences.count %>
+                          <li class="list-group-item">
+                        <% else %>
+                          <li class="list-group-item work_experience_user_<%= n %> collapse" aria-labelledby="headingOne" data-parent = "#accordion_2">
+                        <% end %>
+
+                          <%= work_experience.company %><br>
+                          <span class = "small">
+                            Period:
+                            <%= work_experience.period_start.strftime("%b, %Y") if work_experience.period_start.present? %>
+                            ~
+                            <%= work_experience.period_end.strftime("%b, %Y") if work_experience.period_end.present? %>
+                          </span>
+                          </li>
+                        <% end %>
+
+                        <% if user.work_experiences.count > 1 %>
+                        <li class = "list-group-item text-right p-1">
+                        <span
+                        class="badge badge-secondary"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target=".work_experience_user_<%= n %>"
+                        aria-expanded = "true"
+                        aria-controls="collapseOne">
+                          show more..
+                        </span>
+                      </li>
+                      <% end %>
+                      </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% n += 1 %>
+        <% end %>
+    </div>
+  </div>
+</div>

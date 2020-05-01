@@ -1,0 +1,376 @@
+<div class="container">
+  <!-- プロフィール -->
+  <div class="card mt-4 mb-4">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-4">
+          <span class="align-middle">Profile Overview</span>
+        </div>
+        <div class="col-8 text-right">
+          <%= link_to 'Confirm / Edit Profile', user_path, class: "btn btn-success btn-sm" %>
+          <%= link_to 'Edit Account', edit_user_registration_path, class: "btn btn-success btn-sm" %>
+        </div>
+      </div>
+    </div>
+    <div class="row no-gutters">
+      <div class="col-md-2">
+        <div class="m-3">
+          <%= image_tag @user.image.url, class: 'img-thumbnail d-block mx-auto m-4' if @user.image.present? %>
+          <%= image_tag("default_image.jpeg", class: 'img-thumbnail d-block mx-auto m-4') unless @user.image.present? %>
+        </div>
+        <div class="pl-3">
+          <h6 class="card-title">Name:<%= @user.first_name && @user.last_name ? @user.first_name + " " + @user.last_name : "No Name"  %></h6>
+          <div><small>Status:<%= @user.status || " Blank" %></small></div>
+          <div><small>Age:<%= @user.age.present? ? "#{@user.age} years old" : " Blank" %> </small></div>
+          <div><small>Gender:<%= @user.gender || " Blank" %></small></div>
+          <div><small><%= @user.email %></small></div>
+          <small class="text-muted">Last Update: <%= @user.updated_at.strftime('%m/%d/%Y') %></small>
+        </div>
+      </div>
+      <!-- Profile Field -->
+      <div class="col-md-10">
+        <div class="card-body">
+          <div class="row">
+            <!-- Left Side Card Area -->
+            <div class="col-md-6">
+              <!-- Left Side Card 1 -->
+              <div class="card mb-2">
+                <div class="card-header px-2 py-1 bg-dark text-white">
+                  <strong>Preference</strong>
+                </div>
+                <div class="card-body p-2">
+                  <div class="mb-2">
+                    <strong>Job Category: </strong>
+                    <% if @user.job_categories.present? %>
+                      <% @user.job_categories.each do |job_category| %>
+                        <%= job_category.name %>
+                      <% end %>
+                    <% else %>
+                      Blank
+                    <% end %>
+                  </div>
+                  <div class="mb-2">
+                    <strong>Industry: </strong>
+                    <% if @user.industries.present? %>
+                      <% @user.industries.each do |industry| %>
+                        <%= industry.name %>
+                      <% end %>
+                    <% else %>
+                      Blank
+                    <% end %>
+                  </div>
+                  <div>
+                    <strong>Expected Salary: </strong>
+                    <%= (@user.expected_salary.to_s(:delimited) + " USD" if @user.expected_salary.present?) || " Blank" %>
+                  </div>
+                </div>
+              </div>
+              <!-- Left Side Card 2 -->
+              <div class="card mb-2">
+                <div class="card-header px-2 py-1 bg-dark text-white">
+                  <strong>Skill</strong>
+                </div>
+                <div class="card-body p-2">
+                  <div class="mb-2">
+                    <strong>Language:</strong>
+                    <% if @user.languages.present? %>
+                      <% @user.languages.each do |language| %>
+                      <%= language.name %>
+                      <span class = "badge badge-primary"><%= language.level %></span>
+                      <% end %>
+                    <% else %>
+                      Blank
+                    <% end %>
+                  </div>
+                  <div class="mb-2">
+                    <strong>Skill:</strong>
+                    <% if @user.user_skills.present? %>
+                      <% @user.user_skills.each do |user_skill| %>
+                      <span class="badge badge-light"><%= user_skill.name %></span>
+                      <% end %>
+                    <% else %>
+                      Blank
+                    <% end %>
+                  </div>
+                  <div class="mb-2">
+                    <strong>
+                      Qualification:
+                    </strong>
+                    <% if @user.qualifications.present? %>
+                      <% @user.qualifications.each do |qualification| %>
+                        <span class="badge badge-light"><%= qualification.name %></span>
+                      <% end %>
+                    <% else %>
+                      Blank
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Right Side Card Area -->
+            <div class="col-md-6">
+              <!-- Right Side Card 1 -->
+              <div class="accordion" id = "accordion">
+                <div class="card mb-2">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-2 py-1 bg-dark text-white">
+                      <strong>Education</strong>
+                    </li>
+                    <% if @user.educations.present? %>
+                      <% @user.educations.each_with_index do |education,i| %>
+                        <% if i + 1 == @user.educations.count %>
+                          <li class="list-group-item">
+                        <% else %>
+                          <li class="list-group-item education collapse" aria-labelledby="headingOne" data-parent = "#accordion">
+                        <% end %>
+                            <%= education.school_name %>
+                            <span class = "small"><%= education.major %></span>
+                            <br>
+                            <span class = "small">
+                              Period:
+                              <%= education.period_start.strftime("%b, %Y") if education.period_start.present? %>
+                              ~
+                              <%= education.period_end.strftime("%b, %Y") if education.period_end.present? %>
+                            </span>
+                          </li>
+                      <% end %>
+                    <% else %>
+                      <li class="list-group-item pl-2 py-3 my-4">Blank</li>
+                    <% end %>
+                    <!-- アコーディオンのButton -->
+                    <% if @user.educations.count > 1 %>
+                      <li class = "list-group-item text-right p-1">
+                        <span
+                          class="badge badge-secondary"
+                          type="button"
+                          data-toggle="collapse"
+                          data-target=".education"
+                          aria-expanded = "true"
+                          aria-controls="collapseOne">
+                          show more..
+                        </span>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+              <!-- Right Side Card 2 -->
+              <div class="accordion" id = "accordion_2">
+                <div class="card">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item px-2 py-1 bg-dark text-white">
+                      <strong>Work Experience</strong>
+                    </li>
+                    <% if @user.work_experiences.present? %>
+                    <% @user.work_experiences.each_with_index do |work_experience,i| %>
+                      <% if i + 1 == @user.work_experiences.count %>
+                        <li class="list-group-item">
+                      <% else %>
+                        <li class="list-group-item work_experience collapse" aria-labelledby="headingOne" data-parent = "#accordion_2">
+                      <% end %>
+                        <%= work_experience.company %><br>
+                          <span class = "small">
+                            Period:
+                            <%= work_experience.period_start.strftime("%b, %Y") if work_experience.period_start.present? %>
+                            ~
+                            <%= work_experience.period_end.strftime("%b, %Y") if work_experience.period_end.present? %>
+                          </span>
+                        </li>
+                    <% end %>
+                    <% else %>
+                      <li class="list-group-item pl-2 py-3 my-4">Blank</li>
+                    <% end %>
+
+                      <% if @user.work_experiences.count > 1 %>
+                      <li class = "list-group-item text-right p-1">
+                        <span
+                        class="badge badge-secondary"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target=".work_experience"
+                        aria-expanded = "true"
+                        aria-controls="collapseOne">
+                        show more..
+                      </span>
+                    </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- プロフィールここまで -->
+
+  <div class="row mb-4">
+    <!-- アプライ -->
+    <div class="col-md-6">
+      <div class="d-flex justify-content-between">
+        <div class>
+          <h5>Applications</h5>
+        </div>
+        <div class="text-right align-self-end">
+          <%= link_to "show all", applies_path, class: "badge badge-primary" %>
+        </div>
+      </div>
+      <table class = "table table-bordered text-center">
+        <thead class="thead-dark">
+          <tr class="align-middle text-center">
+            <th class="py-1">Company</th>
+            <th class="py-1">Title</th>
+            <th class="py-1">Applied at</th>
+            <th class="py-1"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if @user.applies.present? %>
+          <% @user.applies.order(created_at:"DESC").limit(5).each do |apply| %>
+          <tr>
+            <td><%= link_to apply.post.company.name, company_path(apply.post.company_id) %></td>
+            <td><%= link_to apply.post.title, post_path(apply.post_id) %></td>
+            <td><%= apply.created_at.strftime("%d/%m/%Y") %></td>
+            <td>
+              <%= link_to(apply_apply_messages_path(apply.id)) do %>
+                <button type="button" class="btn btn-primary p-1" style="width:60px">
+                  <i class="far fa-envelope"></i>
+                    <span class="badge badge-light">
+                      <%= apply.apply_messages.where(read: false, company_id: apply.post.company_id).count %>
+                    </span>
+                </button>
+              <% end %>
+            </td>
+          </tr>
+          <% end %>
+          <% else %>
+          <tr>
+            <td colspan="4">Currently there are no applications.</td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!-- アプリケーションここまで -->
+    <!-- スカウト -->
+    <div class="col-md-6">
+      <div class="d-flex justify-content-between">
+        <div class>
+          <h5>Scouts</h5>
+        </div>
+        <div class="text-right align-self-end">
+          <%= link_to "show all", scouts_path, class: "badge badge-primary" %>
+        </div>
+      </div>
+      <table class = "table table-bordered text-center">
+        <thead class = "thead-dark">
+          <tr>
+            <th class="py-1">Company</th>
+            <th class="py-1">Title</th>
+            <th class="py-1">Scouted at</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+        <% if @user.scouts.present? %>
+        <% @user.scouts.order(created_at:"DESC").limit(5).each do |scout| %>
+        <tr>
+          <td><%= link_to scout.company.name, company_path(scout.company_id) %></td>
+          <td><%= scout.title %></td>
+          <td>
+            <%= scout.created_at.strftime("%d/%m/%Y") %>
+          </td>
+          <td><%= link_to(scout_scout_messages_path(scout.id)) do %>
+              <button type="button" class="btn btn-primary p-1" style="width:60px">
+                <i class="far fa-envelope"></i>
+                <span class="badge badge-light scout_count_badge">
+                  <%= scout.scout_messages.where(read: false, company_id: scout.company_id).count %>
+                </span>
+            </button>
+            <% end %>
+          </td>
+        </tr>
+        <% end %>
+        <% else %>
+        <tr>
+          <td colspan="4">Currently there are no scouts.</td>
+        </tr>
+        <% end %>
+      </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- スカウトここまで -->
+
+  <div class="row">
+    <!-- LikePost -->
+    <div class="col-md-6">
+      <div class="d-flex justify-content-between">
+        <div class>
+          <h5>Favorite Posts</h5>
+        </div>
+        <div class="text-right align-self-end">
+          <%= link_to "show all", like_posts_path, class: "badge badge-primary" %>
+        </div>
+      </div>
+      <table class = "table table-bordered text-center">
+        <thead class ="thead-dark">
+          <tr class="align-middle">
+            <th class="py-1">Company</th>
+            <th class="py-1">Title</th>
+            <th class="py-1">Created At</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% if @user.like_posts.present? %>
+        <% @user.like_posts.order(created_at:"DESC").limit(5).each do |like_post| %>
+        <tr>
+          <td><%= link_to like_post.post.company.name, company_path(like_post.post.company_id) %></td>
+          <td><%= link_to like_post.post.title, post_path(like_post.post_id) %></td>
+          <td><%= like_post.created_at.strftime("%d/%m/%Y") %></td>
+        </tr>
+        <% end %>
+        <% else %>
+        <tr>
+          <td colspan="3">Currently there are no favorite posts.</td>
+        </tr>
+        <% end %>
+      </tbody>
+      </table>
+    </div>
+    <!-- Follow -->
+    <div class="col-md-6">
+      <div class="d-flex justify-content-between">
+        <div class>
+          <h5>Followed Companies</h5>
+        </div>
+        <div class="text-right align-self-end">
+          <%= link_to "show all", follows_path, class: "badge badge-primary" %>
+        </div>
+      </div>
+      <table class = "table table-bordered text-center">
+        <thead class="thead-dark">
+          <tr class="align-middle">
+            <th class="py-1">Company</th>
+            <th class="py-1">Followed At</th>
+          </tr>
+        </thead>
+        <tbody>
+        <% if @user.follows.present? %>
+        <% @user.follows.order(created_at:"DESC").limit(5).each do |follow| %>
+        <tr>
+          <td><%= link_to follow.company.name, company_path(follow.company_id) %></td>
+          <td><%= follow.created_at.strftime("%d/%m/%Y") %></td>
+        </tr>
+        <% end %>
+        <% else %>
+        <tr>
+          <td colspan="2">Currently there are no followed companies.</td>
+        </tr>
+        <% end %>
+      </tbody>
+      </table>
+    </div>
+  </div>
+</div>
