@@ -30,7 +30,7 @@ gem 'font-awesome-sass'
 # gem 'omniauth-facebook'
 # gem 'omniauth-google-oauth2'
 
-# gem 'fog-aws'
+gem 'fog-aws'
 
 gem 'unicorn'
 # gem 'mini_racer', platforms: :ruby　#capistrano用
