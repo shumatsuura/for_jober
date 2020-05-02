@@ -471,8 +471,8 @@ RSpec.describe 'Admin Function Test', type: :system, js: true do
     end
 
     it 'アドミン用アプライメッセージページへアクセスできること' do
-      visit admin_apply_apply_messages_path(@scout)
-      expect(page).to have_current_path admin_apply_apply_messages_path(@scout)
+      visit admin_apply_apply_messages_path(@apply)
+      expect(page).to have_current_path admin_apply_apply_messages_path(@apply)
     end
   end
 end

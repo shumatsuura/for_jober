@@ -30,7 +30,7 @@ gem 'font-awesome-sass'
 # gem 'omniauth-facebook'
 # gem 'omniauth-google-oauth2'
 
-# gem 'fog-aws'
+gem 'fog-aws'
 
 gem 'unicorn'
 # gem 'mini_racer', platforms: :ruby　#capistrano用
@@ -58,6 +58,10 @@ group :development, :test do
 
   gem 'ed25519'
   gem 'bcrypt_pbkdf'
+
+  gem 'capybara', '>= 2.15'
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
 end
 
 group :development do
@@ -68,13 +72,10 @@ group :development do
 end
 
 group :test do
-  gem 'capybara', '>= 2.15'
-  gem 'selenium-webdriver'
-  gem 'webdrivers'
-  gem 'database_cleaner'
   # gem 'capybara', '>= 2.15'
   # gem 'selenium-webdriver'
-  # gem 'chromedriver-helper'
+  # gem 'webdrivers'
+  gem 'database_cleaner'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

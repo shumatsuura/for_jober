@@ -15,13 +15,13 @@ CarrierWave.configure do |config|
   config.fog_attributes = {'Cache-Control' => 'public, max-age=86400'}
   case Rails.env
     when 'production'
-      config.fog_directory = 'job-matching-production'
-      config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/job-matching-production'
+      config.fog_directory = 'forjober-development'
+      config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/forjober-development'
     when 'development'
-      config.fog_directory = 'job-matching-development'
-      config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/job-matching-development'
+      config.fog_directory = 'forjober-development'
+      config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/forjober-development'
     when 'test'
       config.fog_directory = 'job-matching-development'
-      config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/job-matching-development'
+      config.asset_host = 'https://s3-ap-northeast-1.amazonaws.com/forjober-development'
   end
 end
