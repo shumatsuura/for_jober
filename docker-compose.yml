@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-
     tty: true #コンテナを起動させ続けることができる
     stdin_open: true #標準出力をオン
     # command: bundle exec puma -C config/puma.rb #pumaを起動
@@ -12,6 +11,7 @@ services:
     #command: bundle exec unicorn_rails -c config/unicorn.rb -E production -D
     depends_on: #依存関係、dbの後に起動
       - db
+      - chrome
     links:
       - db
     volumes:
@@ -19,6 +19,12 @@ services:
       - public-data:/myproject/public
       - tmp-data:/myproject/tmp
       - log-data:/myproject/log
+    environment:
+      - "SELENIUM_DRIVER_URL=http://selenium_chrome:4444/wd/hub"
+  chrome:
+    image: selenium/standalone-chrome-debug
+    ports:
+      - '4444:4444'
   db:
     image: postgres
     environment:
