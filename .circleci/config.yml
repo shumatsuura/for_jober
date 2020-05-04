@@ -128,7 +128,6 @@ jobs:
             mkdir /tmp/test-results
             TEST_FILES="$(circleci tests glob 'spec/**/*_spec.rb' | circleci tests split --split-by=timings)"
             docker-compose run app bin/rspec --format progress \
-                                                                  --format RspecJunitFormatter \
                                                                   --out /tmp/test-results/rspec.xml \
                                                                   $TEST_FILES
       - run:
