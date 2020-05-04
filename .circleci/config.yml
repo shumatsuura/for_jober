@@ -126,10 +126,10 @@ jobs:
           name: test
           command: |
             mkdir /tmp/test-results
-            TEST_FILES="$(circleci tests glob 'spec/**/*_spec.rb' | circleci tests split --split-by=timings)"
+# TEST_FILES="$(circleci tests glob 'spec/**/*_spec.rb' | circleci tests split --split-by=timings)"
             docker-compose run app bin/rspec --format progress \
                                                                   --out /tmp/test-results/rspec.xml \
-                                                                  $TEST_FILES
+                                                                  # $TEST_FILES
       - run:
           name: docker-compose down
           command: docker-compose down
