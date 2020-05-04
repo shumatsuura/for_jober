@@ -26,9 +26,9 @@ gem 'summernote-rails', '~> 0.8.12.0'
 gem 'bootstrap'
 gem 'font-awesome-sass'
 
-# gem 'omniauth'
+gem 'omniauth'
 # gem 'omniauth-facebook'
-# gem 'omniauth-google-oauth2'
+gem 'omniauth-google-oauth2'
 
 gem 'fog-aws'
 
