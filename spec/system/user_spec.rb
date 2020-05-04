@@ -130,7 +130,7 @@ RSpec.describe 'ユーザー機能', type: :system, js: true do
         fill_in 'user_last_name', with:'test'
         select 'Male', from:'user_gender'
         select '1986', from: 'user_date_of_birth_1i'
-        select '11月', from: 'user_date_of_birth_2i'
+        select 'November', from: 'user_date_of_birth_2i'
         select '2', from: 'user_date_of_birth_3i'
         select 'Closed', from:'user_status'
         click_on 'Update User'
@@ -227,7 +227,7 @@ RSpec.describe 'ユーザー機能', type: :system, js: true do
       select 'Male', from:'user_gender'
       select 'Closed', from:'user_status'
       select '1986', from: 'user_date_of_birth_1i'
-      select '11月', from: 'user_date_of_birth_2i'
+      select 'November', from: 'user_date_of_birth_2i'
       select '2', from: 'user_date_of_birth_3i'
 
 
@@ -238,13 +238,13 @@ RSpec.describe 'ユーザー機能', type: :system, js: true do
       select 'test_industry', from: "user_desired_industries_attributes_0_industry_id"
       fill_in 'user_educations_attributes_0_school_name', with: "test_school"
       select '1999', from: 'user_educations_attributes_0_period_start_1i'
-      select '4月', from: 'user_educations_attributes_0_period_start_2i'
+      select 'April', from: 'user_educations_attributes_0_period_start_2i'
       fill_in 'user_work_experiences_attributes_0_company', with: "test_company"
       select '1999', from: 'user_work_experiences_attributes_0_period_start_1i'
-      select '4月', from: 'user_work_experiences_attributes_0_period_start_2i'
+      select 'April', from: 'user_work_experiences_attributes_0_period_start_2i'
 
       select '1999', from: 'user_qualifications_attributes_0_date_of_acquisition_1i'
-      select '4月', from: 'user_qualifications_attributes_0_date_of_acquisition_2i'
+      select 'April', from: 'user_qualifications_attributes_0_date_of_acquisition_2i'
 
       fill_in 'user_qualifications_attributes_0_name', with: 'test_qualification'
 
