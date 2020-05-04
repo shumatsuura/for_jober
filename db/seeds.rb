@@ -25,7 +25,8 @@ n = 1
                      expected_salary: (10000..200000).to_a.sample,
                      status: ["Actively Looking","Closed","Open for Opportunity"].sample,
                      description: Faker::Lorem.paragraph(sentence_count: 5),
-                     image: File.open("db/icon/#{n}.jpg")
+                     image: File.open("db/icon/#{n}.jpg"),
+                     uid: SecureRandom.uuid
                    )
 
   3.times do

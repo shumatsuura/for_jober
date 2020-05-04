@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'ユーザー機能', type: :system, js: true do
   before do
-    @user1 = User.create(email: 'user1@sample.com', password: "password", password_confirmation: "password")
-    @user2 = User.create(email: 'user2@sample.com', password: "password", password_confirmation: "password")
+    @user1 = User.create(email: 'user1@sample.com', password: "password", password_confirmation: "password", uid: SecureRandom.uuid)
+    @user2 = User.create(email: 'user2@sample.com', password: "password", password_confirmation: "password", uid: SecureRandom.uuid)
     @company1 = Company.create(email: 'company1@sample.com', password: "password", password_confirmation: "password")
   end
 
@@ -79,7 +79,7 @@ RSpec.describe 'ユーザー機能', type: :system, js: true do
 
   describe 'ログインユーザーの機能' do
     before do
-      @user = User.create!(:email => 'test@example.com', :password => 'f4k3p455w0rd')
+      @user = User.create!(:email => 'test@example.com', :password => 'f4k3p455w0rd', uid: SecureRandom.uuid)
       login_as(@user, :scope => :user)
     end
 
@@ -189,8 +189,8 @@ RSpec.describe 'ユーザー機能', type: :system, js: true do
 
   describe 'アドミンユーザーのアクセス権限' do
     before do
-      @admin_user = User.create(email: 'admin_user@sample.com', password: "password", password_confirmation: "password", admin: true)
-      @user3 = User.create(email: 'user3@sample.com', password: "password", password_confirmation: "password")
+      @admin_user = User.create(email: 'admin_user@sample.com', password: "password", password_confirmation: "password", admin: true, uid: SecureRandom.uuid)
+      @user3 = User.create(email: 'user3@sample.com', password: "password", password_confirmation: "password", uid: SecureRandom.uuid)
       login_as(@admin_user, :scope => :user)
     end
 
