@@ -125,10 +125,7 @@ jobs:
       - run:
           name: test
           command: |
-            mkdir /tmp/test-results
-            docker-compose run app bin/rspec --format progress \
-                                                                  --out /tmp/test-results/rspec.xml \
-                                                                  
+            docker-compose run app bin/rspec                      
       - run:
           name: docker-compose down
           command: docker-compose down
