@@ -1,0 +1,131 @@
+# version: 2 # use CircleCI 2.0
+# jobs: # a collection of steps
+#   build: # runs not using Workflows must have a `build` job as entry point
+#     parallelism: 3 # run three instances of this job in parallel
+#     docker: # run the steps with Docker
+#       - image: circleci/ruby:2.6.5-stretch-node-browsers-legacy # ttps://hub.docker.com/r/circleci/ruby/
+#         environment: # environment variables for primary container
+#           BUNDLE_JOBS: 3
+#           BUNDLE_RETRY: 3
+#           BUNDLE_PATH: vendor/bundle
+#           PGHOST: 127.0.0.1
+#           PGUSER: circleci-demo-ruby
+#           RAILS_ENV: test
+#       - image: circleci/postgres:12.0 # database image #ttps://hub.docker.com/r/circleci/postgres
+#         environment: # environment variables for database
+#           POSTGRES_USER: circleci-demo-ruby
+#           POSTGRES_DB: rails_blog
+#           POSTGRES_PASSWORD: ""
+#     steps: # a collection of executable commands
+#       - checkout # special step to check out source code to working directory
+#
+#       # Which version of bundler?
+#       - run:
+#           name: Which bundler?
+#           command: bundle -v
+#
+#       # Restore bundle cache
+#       # Read about caching dependencies: https://circleci.com/docs/2.0/caching/
+#       - restore_cache:
+#           keys:
+#             - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+#             - rails-demo-bundle-v2-
+#
+#       - run: # Install Ruby dependencies
+#           name: Bundle Install
+#           command: bundle check --path vendor/bundle || bundle install --deployment
+#
+#       # Store bundle cache for Ruby dependencies
+#       - save_cache:
+#           key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+#           paths:
+#             - vendor/bundle
+#
+#       # Only necessary if app uses webpacker or yarn in some other way
+#       - restore_cache:
+#           keys:
+#             - rails-demo-yarn-{{ checksum "yarn.lock" }}
+#             - rails-demo-yarn-
+#
+#       - run:
+#           name: Yarn Install
+#           command: yarn install --cache-folder ~/.cache/yarn
+#
+#       # Store yarn / webpacker cache
+#       - save_cache:
+#           key: rails-demo-yarn-{{ checksum "yarn.lock" }}
+#           paths:
+#             - ~/.cache/yarn
+#
+#       - run:
+#           name: Wait for DB
+#           command: dockerize -wait tcp://localhost:5432 -timeout 1m
+#
+#       # - run:
+#       #     name: Database setup
+#       #     command: bin/rails db:schema:load --trace
+#       - run: rm ./config/database.yml
+#       - run: mv ./config/database.yml.ci ./config/database.yml
+#       - run:
+#           name: Database setup #デフォルトでは上記のコメントアウトしたコードだったがDBが存在しないというエラーを吐いたためこのコードに変更
+#           command: |
+#             bundle exec bin/rails db:create
+#             bundle exec rails db:migrate
+#
+#       - run:
+#           name: Run rspec in parallel
+#           command: |
+#             bundle exec rspec --profile 10 \
+#                               --out test_results/rspec.xml \
+#                               --format progress \
+#                               $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)
+#       # - run:
+#       #     name: Rubocop
+#       #     command: bundle exec rubocop
+#       # Save test results for timing analysis
+#       - store_test_results: # Upload test results for display in Test Summary: https://circleci.com/docs/2.0/collect-test-data/
+#           path: test_results
+#       # See https://circleci.com/docs/2.0/deployment-integrations/ for example deploy configs
+
+version: 2
+jobs:
+  build:
+    machine:
+      image: circleci/classic:edge
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Install Docker Compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
+      - run:
+          name: docker-compose up
+          command: |
+            set -x
+            docker-compose up --build -d
+      - run:
+          name: docker-compose stop
+          command: |
+            set -x
+            docker-compose stop
+      - run:
+          name: docker-compose up
+          command: |
+            set -x
+            docker-compose up -d
+      - run:
+          name: db
+          command: |
+            set -x
+            docker-compose run app rails db:create
+            docker-compose run app rails db:migrate
+      - run:
+          name: test
+          command: |
+            docker-compose run app bin/rspec                      
+      - run:
+          name: docker-compose down
+          command: docker-compose down
