@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe 'Admin Function Test', type: :system, js: true do
   before do
-    @user = User.create(email: 'user@sample.com', password: "password", password_confirmation: "password")
-    @user_other = User.create(email: 'user1@sample.com', password: "password", password_confirmation: "password")
+    @user = User.create(email: 'user@sample.com', password: "password", password_confirmation: "password", uid: SecureRandom.uuid)
+    @user_other = User.create(email: 'user1@sample.com', password: "password", password_confirmation: "password", uid: SecureRandom.uuid)
     @company = Company.create!(name: "sample_company", :email => 'test@example.com', :password => 'f4k3p455w0rd')
     @post = FactoryBot.create(:post, title: "post_test", company_id: @company.id)
 
@@ -323,7 +323,7 @@ RSpec.describe 'Admin Function Test', type: :system, js: true do
 
   describe 'アドミンユーザーの権限' do
     before do
-      @admin_user = User.create(email: "admin@admin.com", password: "password", password_confirmation: "password", admin: true)
+      @admin_user = User.create(email: "admin@admin.com", password: "password", password_confirmation: "password", admin: true, uid: SecureRandom.uuid)
       login_as(@admin_user, :scope => :user)
     end
 
