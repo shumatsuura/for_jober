@@ -1,24 +1,69 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+#### サイト名：FOR JOBER
 
-Things you may want to cover:
+#### 製品概要: サブスクリプションモデルの人材マッチングサイト
+* 人材紹介の総合プラットフォーム
+* 企業と求職者が自由にコンタクト可能
 
-* Ruby version
+#### Version
+Rails 5.2.4  
+Ruby 2.6.5
 
-* System dependencies
+#### 環境
+AWS EC2 (Nginx + Unicorn)  
+AWS ACM  
+AWS ALB  
+AWS S3  
+Sendgrid  
 
-* Configuration
+#### 使用Gem
 
-* Database creation
+* ransack
+* devise
+* summernote-rails
+* omniauth
+* omniauth-google-oauth2
+* fog-aws
+* font-awesome-sass
+* unicorn
+* sendgrid-ruby
+* kaminari
+* enum_help
+* bcrypt
+* faker
+* carrierwave
+* mini_magick
+* fog-aws
+* rspec-rails
+* spring-commands-rspec
+* factory_bot_rails
+* launchy
+* dotenv-rails
+* pry-rails
+* better_errors
+* binding_of_caller
+* capybara
+* selenium-webdriver
+* webdrivers
+* database_cleaner
 
-* Database initialization
+#### テスト用ユーザーアカウント
+下記にてアドミン権限でユーザーログイン可能  
+email: admin@test.com  
+password :password
 
-* How to run the test suite
+#### カタログ設計、機能一覧
+https://docs.google.com/spreadsheets/d/1tREWJyGpvD_f6uMb6TAtDlP0qQMP-cY98XpJW27wxVY/edit?usp=sharing
 
-* Services (job queues, cache servers, search engines, etc.)
+#### テーブル定義書
+https://docs.google.com/spreadsheets/d/1f8nqy3iAlWMxYeibp71rw-sAsVNWVfMGqgQ24fTro64/edit?usp=sharing
 
-* Deployment instructions
+#### ER図
+https://drive.google.com/file/d/1_22nHn05GsWSE7W3NAcXXL6LHiYmDhH8/view?usp=sharing
 
-* ...
+#### 画面遷移図
+https://drive.google.com/file/d/1nYhmQ-HyaR64OtLrFw7n5jFG3Ave8oWg/view?usp=sharing
+
+#### ワイヤーフレーム
+https://drive.google.com/file/d/1G7u8JFmEXLEoeMgZgSuf27d9ssJ4VopJ/view?usp=sharing
