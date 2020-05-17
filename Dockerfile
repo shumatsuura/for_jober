@@ -15,3 +15,5 @@ ADD . /myproject
 
 RUN rm -rf tmp/sockets
 RUN mkdir -p tmp/sockets
+RUN rm -rf tmp/pids
+RUN mkdir -p tmp/pids
